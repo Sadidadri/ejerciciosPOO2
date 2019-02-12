@@ -3,6 +3,7 @@ package ejerciciosHerencia;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 /**
@@ -72,9 +73,9 @@ public class FechasExamen {
                       int n = s.nextInt(); s.nextLine();
                       if (n>0) {
                         if (elegirOpcion==2) {    // sumar días a la fecha
-                          fecha = sumaDiasFecha(fecha,n);
+                          fecha = convertirCadenaALocalDate(sumaDiasFecha(convertirLocalDateACadena(fecha),n));
                         } else {        // restar días a la fecha
-                          fecha = sumaDiasFecha(fecha,-1*n);
+                          fecha = convertirCadenaALocalDate(sumaDiasFecha(convertirLocalDateACadena(fecha),-1*n));
                         }
                         System.out.println("La nueva fecha es "+fecha);
                       } else {
@@ -85,7 +86,7 @@ public class FechasExamen {
                       System.out.print("Introduzca una fecha para comparar con "+fecha+": ");
                       String fecha2 = s.nextLine();
                       if (esFechaValida(fecha2)) {
-                        int comparacion = comparaFechas(fecha,fecha2);
+                        int comparacion = comparaFechas(convertirLocalDateACadena(fecha),fecha2);
                         if (comparacion<0) {
                           System.out.println(fecha+" es anterior a "+fecha2);
                         } else if (comparacion>0) {
@@ -287,6 +288,17 @@ public class FechasExamen {
       anyo = "0"+anyo;
     }
     return dia + "/" + mes + "/" + anyo;
+  }
+  public static String convertirLocalDateACadena(LocalDate ld) {
+  	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+  	String cadena = ld.format(formatter);
+  	return cadena;
+  }
+  public static LocalDate convertirCadenaALocalDate(String cad) {
+  	int d = Integer.parseInt(cad.substring(0, 2));
+    int m = Integer.parseInt(cad.substring(3, 5));
+    int a = Integer.parseInt(cad.substring(6));
+  	return LocalDate.of(a, m, d);
   }
 }
 
